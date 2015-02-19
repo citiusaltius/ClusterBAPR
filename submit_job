@@ -3,5 +3,6 @@
 echo "submitting job"
 
 #qsub -q dev -l nodes=1:ppn=<cores>:<feature>
-qsub -q dev -l nodes=1:ppn=2:magny_cours
+#qsub -q dev -l nodes=1:ppn=1:magny_cours test_submission
 
+qsub -q dev -l nodes=1:ppn=1:magny_cours plink_vcf_batch
