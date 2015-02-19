@@ -32,7 +32,7 @@
 #               $SCRATCH                a temporary space on the local drive of the compute node your job executes on - to be used for local staging of job files
 #               $PBS_ARRAYID    for job arrays, the index of the specific job replicate
  
-echo 'new submission' 
+echo 'PLINK VCF batch converter' 
 #PBS -j oe
 #PBS -N index_refs
 #PBS -q shared
