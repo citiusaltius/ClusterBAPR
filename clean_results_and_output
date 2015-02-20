@@ -4,4 +4,4 @@
 echo "Cleaning output..."
 rm ./output/*
 echo "Cleaning results..";
-rm ./results/*
+rm -r ./results/*

@@ -9,8 +9,8 @@ tail -n 1 qsub_outputs | \
 )
 echo "--------"
 echo "./output"
-ls -l ./output
+ls -rl ./output
 
 echo "--------"
 echo "./results"
-ls -l ./results
+ls -rl ./results

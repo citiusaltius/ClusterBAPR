@@ -39,10 +39,11 @@ echo 'PLINK VCF batch converter'
 #PBS -N index_refs
 #PBS -q shared
 #PBS -l nodes=1:ppn=1
-#PBS -l walltime=0:01:00
-#PBS -l mem=5GB
-#PBS -l file=500GB
+#PBS -l walltime=24:00:00
+#PBS -l mem=100GB
+#PBS -l file=1000GB
 #PBS -S /bin/tcsh
+#PBS -vx
 
 #####
 # This will tell you which host your job ran on:
@@ -72,6 +73,7 @@ cp -R $PBS_O_HOME/ClusterBAPR/* $SCRATCH/ClusterBAPR
 echo "--------------------\n" >> scratch_directory_listing
 echo "$SCRATCH/ClusterBAPR" >> scratch_directory_listing
 ls -l $SCRATCH/ClusterBAPR >> scratch_directory_listing
+echo "copied: ClusterBAPR files"
 
 # copy PLINK 1.9
 mkdir $SCRATCH/plink
@@ -79,16 +81,33 @@ cp $PBS_O_HOME/tools/plink-1.9/* $SCRATCH/plink
 echo "--------------------\n" >> scratch_directory_listing
 echo "$SCRATCH/plink" >> scratch_directory_listing
 ls -l $SCRATCH/plink >> scratch_directory_listing
+echo "copied: PLINK"
 
-# copy Kamboh data over
-# mkdir $SCRATCH/Kamboh
-# cp $PBS_O_HOME/Kamboh/* $SCRATCH/Kamboh
+# make data directory
+mkdir $SCRATCH/data
 
+# copy Kamboh 22 exome data over
+mkdir $SCRATCH/data/kamboh-22exomes
+cp $PBS_O_HOME/data/kamboh-22exomes/* $SCRATCH/data/kamboh-22exomes
+echo "--------------------\n" >> scratch_directory_listing
+echo "$SCRATCH/data/kamboh-22exomes" >> scratch_directory_listing
+ls -l $SCRATCH/data/kamboh-22exomes >> scratch_directory_listing
+echo "copied: Kamboh 22 exome"
+
+# copy Kamboh year 1 and 2 data over
+mkdir $SCRATCH/data/kamboh-year1and2
+# cp $PBS_O_HOME/data/kamboh-year1and2/gzipped/* $SCRATCH/data/kamboh-year1and2/
+cp $PBS_O_HOME/data/kamboh-year1and2/* $SCRATCH/data/kamboh-year1and2/
+echo "--------------------\n" >> scratch_directory_listing
+echo "$SCRATCH/data/kamboh-year1and2" >> scratch_directory_listing
+ls -l $SCRATCH/data/kamboh-year1and2 >> scratch_directory_listing
+echo "copied: Kamboh year 1 data, uncompressed"
 
 echo staged_time: `date`
 
 mv scratch_directory_listing $SCRATCH
-cd $SCRATCH                                     # move to local scratch space. If you copied over compressed files, you might have a line here to uncompress those files as well
+cd $SCRATCH                                    
+# move to local scratch space. If you copied over compressed files, you might have a line here to uncompress those files as well
 
 # verify a list of files transferred
 echo "--------------------\n" >> scratch_directory_listing
@@ -99,19 +118,25 @@ ls -l >> scratch_directory_listing
 mkdir results
 mv scratch_directory_listing results/
 
-# results_files
-
 #####
 # the input/output or computationally intensive part of your script goes here
 
-./plink/plink --ped ./plink/toy.ped --map ./plink/toy.map --make-bed --out ./results/toy-bed
+# test PLINK 
+# ./plink/plink --ped ./plink/toy.ped --map ./plink/toy.map --make-bed --out ./results/toy-bed
+echo ---------
+echo plink-kamboh-22exomes-start: `date`
+./plink/plink --vcf $SCRATCH/data/kamboh-22exomes/A0406.combined.vcf.gz --make-bed --out ./results/A0406
+echo plink-kamboh-22exomes-end: `date`
+echo ---------
+echo plink-kamboh-year1and2-start: `date`
+./plink/plink --vcf $SCRATCH/data/kamboh-year1and2/Year1and2.allChr.SNPs.recalibrated.Indels.filtered.dbSNP.snpEff.vcf --make-bed --out ./results/Year1and2.allChr.SNPs.recalibrated.Indels.filtered.dbSNP.snpEff
+echo plink-kamboh-year1and2-end: `date`
 
- 
 #####
 # code to return results files to your working directory
-mkdir $PBS_O_WORKDIR/$PBS_JOBID
-cp -r ./results  $PBS_O_WORKDIR/results/$PBS_JOBID # don't forget to copy those results files that are important back to your working directory!
-cp scratch_directory_listing $PBS_O_WORKDIR/results/scratch_directory_listing
+# mkdir $PBS_O_WORKDIR/results/$PBS_JOBID
+cp -pr ./results  $PBS_O_WORKDIR/results/$PBS_JOBID # don't forget to copy those results files that are important back to your working directory!
+
 
 #####
 # other clean up items, loop increments, etc., can go here
