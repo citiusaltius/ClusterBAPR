@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "last job: "
+tail -n 1 qsub_outputs | \
+(
+	read last_job; 
+	echo "$last_job";
+	checkjob "$last_job";
+)
+echo "--------"
+echo "./output"
+ls -l ./output
+
+echo "--------"
+echo "./results"
+ls -l ./results

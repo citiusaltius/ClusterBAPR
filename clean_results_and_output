@@ -1,0 +1,7 @@
+#!/bin/bash
+
+
+echo "Cleaning output..."
+rm ./output/*
+echo "Cleaning results..";
+rm ./results/*

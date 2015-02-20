@@ -4,9 +4,9 @@ echo "submitting job"
 
 echo $HOME
 
-ls -l > directory_listing
-cat directory_listing
-rm directory_listing
+# ls -l > directory_listing
+# cat directory_listing
+# rm directory_listing
 
 # qsub -q dev -l nodes=1:ppn=<cores>:<feature>
 # qsub -q dev -l nodes=1:ppn=1:magny_cours test_submission
