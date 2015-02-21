@@ -38,8 +38,8 @@ echo 'PLINK VCF batch converter'
 #PBS -j oe
 #PBS -N index_refs
 #PBS -q shared
-#PBS -l nodes=1:ppn=1
-#PBS -l walltime=24:00:00
+#PBS -l nodes=2:ppn=3:magny_cours
+#PBS -l walltime=5:00:00
 #PBS -l mem=100GB
 #PBS -l file=1000GB
 #PBS -S /bin/tcsh
