@@ -9,11 +9,19 @@ if [[ -n $1 ]]
       echo "sed command:  ${sed_command}"
       sed_result=`${sed_command}`
       echo "result:       ${sed_result}"
+
       echo "----------"
       checkjob_command="checkjob -v -v ${sed_result}"
       echo "checkjob:     ${checkjob_command}"
       checkjob_result=`${checkjob_command}`
       echo "$checkjob_result"
+
+      echo "----------"
+      showstart_command="showstart ${sed_result}"
+      echo "showstart:    ${showstart_command}"
+      showstart_result=`${showstart_command}`
+      echo "$showstart_result"
+
    else
       echo "argument 1 not set"
 fi
