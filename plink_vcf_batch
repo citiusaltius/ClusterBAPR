@@ -38,8 +38,8 @@ echo 'PLINK VCF batch converter'
 #PBS -j oe
 #PBS -N index_refs
 #PBS -q shared
-#PBS -l nodes=2:ppn=3:magny_cours
-#PBS -l walltime=5:00:00
+#PBS -l nodes=1:ppn=3:magny_cours
+#PBS -l walltime=6:00:00
 #PBS -l mem=100GB
 #PBS -l file=1000GB
 #PBS -S /bin/tcsh
@@ -97,7 +97,7 @@ echo "copied: Kamboh 22 exome"
 # copy Kamboh year 1 and 2 data over
 mkdir $SCRATCH/data/kamboh-year1and2
 # cp $PBS_O_HOME/data/kamboh-year1and2/gzipped/* $SCRATCH/data/kamboh-year1and2/
-cp $PBS_O_HOME/data/kamboh-year1and2/* $SCRATCH/data/kamboh-year1and2/
+# cp $PBS_O_HOME/data/kamboh-year1and2/* $SCRATCH/data/kamboh-year1and2/
 echo "--------------------\n" >> scratch_directory_listing
 echo "$SCRATCH/data/kamboh-year1and2" >> scratch_directory_listing
 ls -l $SCRATCH/data/kamboh-year1and2 >> scratch_directory_listing

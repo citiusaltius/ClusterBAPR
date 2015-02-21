@@ -10,7 +10,7 @@ if [[ -n $1 ]]
       sed_result=`${sed_command}`
       echo "result:       ${sed_result}"
       echo "----------"
-      checkjob_command="checkjob ${sed_result}"
+      checkjob_command="checkjob -v -v ${sed_result}"
       echo "checkjob:     ${checkjob_command}"
       checkjob_result=`${checkjob_command}`
       echo "$checkjob_result"

@@ -5,14 +5,11 @@ echo "submitting job"
 
 echo \$HOME is: $HOME
 
-# ls -l > directory_listing
-# cat directory_listing
-# rm directory_listing
 
 # qsub -q dev -l nodes=1:ppn=<cores>:<feature>
 # qsub -q dev -l nodes=1:ppn=1:magny_cours test_submission
 
-qsub -q shared -l nodes=1:ppn=1:magny_cours plink_vcf_batch -e $HOME/ClusterBAPR/output/ -o $HOME/ClusterBAPR/output/ >> qsub_outputs
+qsub -q test -l nodes=1:ppn=3:magny_cours,walltime=6:00:00 plink_vcf_batch -e $HOME/ClusterBAPR/output/ -o $HOME/ClusterBAPR/output/ >> qsub_outputs
 # qsub -I ls -q shared nodes=1:ppn=2:magny_cours
 
 
