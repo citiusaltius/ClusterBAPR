@@ -31,18 +31,20 @@
 #               $PBS_O_WORKDIR  the directory from which you executed (qsub) your job
 #               $SCRATCH                a temporary space on the local drive of the compute node your job executes on - to be used for local staging of job files
 #               $PBS_ARRAYID    for job arrays, the index of the specific job replicate
-#PBS -o $PBS_O_HOME/ClusterBAPR/results
-#PBS -e $PBS_O_HOME/ClusterBAPR/results
+#PBS -o $PBS_O_HOME/ClusterBAPR/results/
+#PBS -e $PBS_O_HOME/ClusterBAPR/results/
 #PBS -j oe
 #PBS -N index_refs
-# #PBS -q shared
-# #PBS -l nodes=1:ppn=3:magny_cours
-# #PBS -l walltime=1:00:00
-#PBS -l mem=100GB
-#PBS -l file=1000GB
+#PBS -q shared
+#PBS -l nodes=1:ppn=8:magny_cours
+#PBS -l walltime=1:00:00
+#PBS -l mem=10GB
+#PBS -l file=100GB
 #PBS -S /bin/tcsh
 #PBS -M ian+research@aiwong.com
 #PBS -m abe
+#PBS -A cp2k 
+##PBS -A MBARMADA
 #PBS -vx
 
 
@@ -58,6 +60,7 @@ echo start_time: `date`
 # your prep code (module loading, variable initialization, file prep, etc.) goes here - things that don't require a lot of input/output
 # module load genomics
 # module load R
+module load mono
 
 #####
 echo PBS_O_HOME: $PBS_O_HOME
@@ -98,15 +101,6 @@ echo "$SCRATCH/data/kamboh-22exomes" >> scratch_directory_listing
 ls -l $SCRATCH/data/kamboh-22exomes >> scratch_directory_listing
 echo "copied: Kamboh 22 exome"
 
-# copy Kamboh year 1 and 2 data over
-mkdir $SCRATCH/data/kamboh-year1and2
-# cp $PBS_O_HOME/data/kamboh-year1and2/gzipped/* $SCRATCH/data/kamboh-year1and2/
-# cp $PBS_O_HOME/data/kamboh-year1and2/* $SCRATCH/data/kamboh-year1and2/
-echo "--------------------\n" >> scratch_directory_listing
-echo "$SCRATCH/data/kamboh-year1and2" >> scratch_directory_listing
-ls -l $SCRATCH/data/kamboh-year1and2 >> scratch_directory_listing
-echo "copied: Kamboh year 1 data, uncompressed"
-
 echo staged_time: `date`
 
 mv scratch_directory_listing $SCRATCH
@@ -127,14 +121,7 @@ mv scratch_directory_listing results/
 
 # test PLINK 
 # ./plink/plink --ped ./plink/toy.ped --map ./plink/toy.map --make-bed --out ./results/toy-bed
-echo ---------
-echo plink-kamboh-22exomes-start: `date`
-./plink/plink --vcf $SCRATCH/data/kamboh-22exomes/A0406.combined.vcf.gz --make-bed --out ./results/A0406
-echo plink-kamboh-22exomes-end: `date`
-echo ---------
-echo plink-kamboh-year1and2-start: `date`
-./plink/plink --vcf $SCRATCH/data/kamboh-year1and2/Year1and2.allChr.SNPs.recalibrated.Indels.filtered.dbSNP.snpEff.vcf --make-bed --out ./results/Year1and2.allChr.SNPs.recalibrated.Indels.filtered.dbSNP.snpEff
-echo plink-kamboh-year1and2-end: `date`
+
 
 #####
 # code to return results files to your working directory
